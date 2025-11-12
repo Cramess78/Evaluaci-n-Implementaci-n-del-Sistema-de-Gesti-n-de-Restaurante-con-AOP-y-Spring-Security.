@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Platos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        /* === Estilo general tipo iOS === */
+        body {
+            background-color: #f2f2f7;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+            color: #1c1c1e;
+            min-height: 100vh;
+        }
+
+        /* === Barra superior translúcida === */
+        .ios-navbar {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 1px 10px rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            padding: 0.8rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .ios-navbar h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #000;
+            margin: 0;
+        }
+
+        /* === Contenedor principal === */
+        .container {
+            max-width: 900px;
+        }
+
+        /* === Tarjeta principal === */
+        .card {
+            background: #fff;
+            border: none;
+            border-radius: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        /* === Títulos === */
+        h2 {
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 1.5rem;
+        }
+
+        /* === Botones estilo iOS === */
+        .btn {
+            border-radius: 18px;
+            border: none;
+            font-weight: 500;
+            padding: 0.45rem 1.1rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .btn-primary {
+            background-color: #007aff; /* Azul iOS */
+            color: white;
+        }
+
+        .btn-warning {
+            background-color: #ffcc00; /* Amarillo iOS */
+            color: #000;
+        }
+
+        .btn-danger {
+            background-color: #ff3b30; /* Rojo iOS */
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #8e8e93; /* Gris iOS */
+            color: white;
+        }
+
+        /* === Tabla tipo iOS === */
+        .table {
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+
+        .table th {
+            background-color: #f2f2f7;
+            border: none;
+            color: #3a3a3c;
+            font-weight: 600;
+        }
+
+        .table td {
+            background-color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            vertical-align: middle;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: background 0.2s ease;
+        }
+
+        tr:hover td {
+            background-color: #f9f9fb;
+        }
+
+        .table td:first-child {
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+
+        .table td:last-child {
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        /* === Botón flotante volver === */
+        .volver-btn {
+            display: block;
+            width: fit-content;
+            margin: 2rem auto 0;
+            background: rgba(142,142,147,0.2);
+            color: #000;
+            font-weight: 500;
+            backdrop-filter: blur(15px);
+            border-radius: 16px;
+            padding: 0.5rem 1.5rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .volver-btn:hover {
+            background: rgba(142,142,147,0.3);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Barra superior iOS -->
+<nav class="ios-navbar">
+    <h1>Gestión de Platos 🍽️</h1>
+</nav>
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Platos</h2>
+            <a th:href="@{/platos/nuevo}" class="btn btn-primary">+ Nuevo Plato</a>
+        </div>
+
+        <table class="table align-middle">
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Precio</th>
+                <th>Estado</th>
+                <th class="text-center">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="plato : ${platos}">
+                <td th:text="${plato.nombre}"></td>
+                <td th:text="${plato.tipo}"></td>
+                <td th:text="${plato.precio}"></td>
+                <td>
+                            <span th:text="${plato.estado ? 'Activo' : 'Inactivo'}"
+                                  th:classappend="${plato.estado} ? 'text-success' : 'text-secondary'"></span>
+                </td>
+                <td class="text-center">
+                    <a th:href="@{'/platos/editar/' + ${plato.idPlato}}" class="btn btn-warning btn-sm">Editar</a>
+                    <a th:href="@{'/platos/eliminar/' + ${plato.idPlato}}" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a th:href="@{/dashboard}" class="volver-btn">⬅ Volver al Panel</a>
+</div>
+
+</body>
+</html>

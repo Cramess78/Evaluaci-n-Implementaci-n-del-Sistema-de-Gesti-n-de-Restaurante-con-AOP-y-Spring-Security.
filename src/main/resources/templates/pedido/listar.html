@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pedidos Registrados</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+    <style>
+        /* === Fondo tipo iOS === */
+        body {
+            background: linear-gradient(180deg, #f4f5f8 0%, #e8ebf0 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+            color: #1c1c1e;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* === Contenedor glass === */
+        .ios-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            border-radius: 22px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            padding: 2rem;
+            max-width: 1000px;
+            width: 100%;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* === Título === */
+        .ios-card h2 {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #000;
+            margin-bottom: 1.8rem;
+        }
+
+        /* === Botón Nuevo Pedido === */
+        .btn-primary {
+            background: linear-gradient(135deg, #007aff, #0a84ff);
+            border: none;
+            border-radius: 16px;
+            padding: 10px 20px;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(0,122,255,0.3);
+            transition: all 0.25s ease-in-out;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 12px rgba(0,122,255,0.4);
+        }
+
+        /* === Tabla tipo iOS === */
+        .table {
+            border-collapse: separate;
+            border-spacing: 0 12px;
+            width: 100%;
+        }
+
+        .table thead th {
+            border: none;
+            color: #6e6e73;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .table tbody tr {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .table tbody tr:hover {
+            transform: scale(1.01);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .table td {
+            border: none;
+            text-align: center;
+            padding: 14px;
+            vertical-align: middle;
+        }
+
+        /* === Badges tipo iOS === */
+        .badge {
+            border-radius: 10px;
+            font-size: 0.85rem;
+            padding: 6px 10px;
+            font-weight: 500;
+        }
+
+        .bg-success { background-color: #34c759 !important; color: #fff; }
+        .bg-warning { background-color: #ffd60a !important; color: #1c1c1e; }
+        .bg-secondary { background-color: #a1a1aa !important; color: #fff; }
+        .bg-dark { background-color: #3a3a3c !important; color: #fff; }
+
+        /* === Botones pequeños === */
+        .btn-sm {
+            border-radius: 10px;
+            font-size: 0.85rem;
+            padding: 6px 10px;
+            font-weight: 500;
+        }
+
+        .btn-warning {
+            background-color: #ffcc00;
+            border: none;
+            color: #1c1c1e;
+        }
+
+        .btn-danger {
+            background-color: #ff3b30;
+            border: none;
+            color: white;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* === Botón Volver === */
+        .btn-secondary {
+            background-color: #8e8e93;
+            border: none;
+            color: white;
+            font-weight: 500;
+            border-radius: 18px;
+            padding: 0.5rem 1.5rem;
+            transition: background-color 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background-color: #6e6e73;
+        }
+
+        /* === Animación === */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === Responsividad === */
+        @media (max-width: 768px) {
+            .ios-card {
+                padding: 1.5rem;
+            }
+            .table thead {
+                display: none;
+            }
+            .table tbody tr {
+                display: block;
+                margin-bottom: 12px;
+                border-radius: 14px;
+                text-align: left;
+                padding: 10px;
+            }
+            .table td {
+                display: flex;
+                justify-content: space-between;
+                padding: 8px 10px;
+                font-size: 0.95rem;
+            }
+            .table td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: #6e6e73;
+            }
+            .actions {
+                justify-content: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="ios-card">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Pedidos Registrados</h2>
+        <a th:href="@{/pedidos/nuevo}" class="btn btn-primary">+ Nuevo Pedido</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Mesa</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="pedido : ${pedidos}">
+                <td data-label="ID" th:text="${pedido.idPedido}"></td>
+                <td data-label="Cliente" th:text="${pedido.cliente != null ? pedido.cliente.nombres + ' ' + pedido.cliente.apellidos : 'Sin cliente'}"></td>
+                <td data-label="Mesa" th:text="'Mesa ' + ${pedido.mesa.numero}"></td>
+                <td data-label="Fecha" th:text="${#temporals.format(pedido.fechaHora, 'dd/MM/yyyy HH:mm')}"></td>
+                <td data-label="Estado">
+                    <span th:text="${pedido.estado}"
+                          th:classappend="${pedido.estado == 'SERVIDO' ? 'badge bg-success' :
+                                           pedido.estado == 'EN_PREPARACION' ? 'badge bg-warning' :
+                                           pedido.estado == 'PENDIENTE' ? 'badge bg-secondary' :
+                                           'badge bg-dark'}">
+                    </span>
+                </td>
+                <td data-label="Acciones" class="actions">
+                    <a th:href="@{'/pedidos/editar/' + ${pedido.idPedido}}" class="btn btn-sm btn-warning">Editar</a>
+                    <a th:href="@{'/pedidos/eliminar/' + ${pedido.idPedido}}" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center mt-4">
+        <a th:href="@{/dashboard}" class="btn btn-secondary">Volver</a>
+    </div>
+</div>
+</body>
+</html>

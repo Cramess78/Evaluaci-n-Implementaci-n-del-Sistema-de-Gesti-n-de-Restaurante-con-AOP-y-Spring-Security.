@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Compra</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        body {
+            background-color: #f2f2f7;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+            color: #1c1c1e;
+        }
+
+        h2 {
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 1.5rem;
+        }
+
+        .card {
+            background: #fff;
+            border: none;
+            border-radius: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            padding: 2rem;
+        }
+
+        label {
+            font-weight: 500;
+            color: #3a3a3c;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border-radius: 12px;
+            border: 1px solid #d1d1d6;
+            padding: 0.6rem 1rem;
+            font-size: 1rem;
+        }
+
+        .btn {
+            border-radius: 18px;
+            font-weight: 500;
+            padding: 0.45rem 1.1rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .btn-success {
+            background-color: #34c759;
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #8e8e93;
+            color: white;
+        }
+
+        .btn-back {
+            background-color: #e5e5ea;
+            color: #1c1c1e;
+        }
+
+        .btn-back:hover {
+            background-color: #d1d1d6;
+        }
+
+        .container {
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="card">
+        <a th:href="@{/inventario}" class="btn btn-back mb-3">← Volver</a>
+        <h2>Registrar Compra</h2>
+        <form th:action="@{/inventario/guardar}" th:object="${compra}" method="post">
+            <input type="hidden" th:field="*{idCompra}">
+
+            <div class="mb-3">
+                <label for="proveedor">Proveedor</label>
+                <select th:field="*{proveedor}" class="form-control" id="proveedor" required>
+                    <option value="">Seleccione un proveedor</option>
+                    <option th:each="p : ${proveedores}"
+                            th:value="${p.idProveedor}"
+                            th:text="${p.nombre + ' - ' + p.ruc}"></option>
+                </select>
+
+            </div>
+
+            <div class="mb-3">
+                <label for="fechaCompra">Fecha de Compra</label>
+                <input type="date" th:field="*{fechaCompra}" class="form-control" id="fechaCompra">
+            </div>
+
+            <div class="mb-3">
+                <label for="total">Total</label>
+                <input type="number" step="0.01" th:field="*{total}" class="form-control" id="total">
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <a th:href="@{/inventario}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+    <div class="text-end mt-3">
+        <a th:href="@{/dashboard}" class="btn btn-secondary px-4 py-2">Volver</a>
+    </div>
+</div>
+</body>
+</html>

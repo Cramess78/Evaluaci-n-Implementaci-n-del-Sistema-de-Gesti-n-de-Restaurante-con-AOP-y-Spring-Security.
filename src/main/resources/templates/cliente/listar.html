@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Clientes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        body {
+            background-color: #f2f2f7; /* color típico de fondo iOS */
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+            color: #1c1c1e;
+        }
+
+        h2 {
+            font-weight: 600;
+            color: #000;
+        }
+
+        .card {
+            background: #fff;
+            border: none;
+            border-radius: 24px; /* esquinas grandes y redondeadas */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05); /* sombra suave estilo iOS */
+            overflow: hidden;
+        }
+
+        .btn {
+            border-radius: 18px;
+            border: none;
+            font-weight: 500;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        .btn-primary {
+            background-color: #007aff; /* azul iOS */
+        }
+
+        .btn-warning {
+            background-color: #ff9f0a; /* naranja iOS */
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: #ff3b30; /* rojo iOS */
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #8e8e93; /* gris iOS */
+            color: white;
+        }
+
+        .table {
+            border: none;
+        }
+
+        .table th {
+            background-color: #f2f2f7;
+            border: none;
+            color: #8e8e93;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+        }
+
+        .table td {
+            border: none;
+            padding: 1rem;
+        }
+
+        .table tbody tr {
+            background-color: #fff;
+            border-radius: 18px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.04);
+        }
+
+        .table tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .table-responsive {
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .ios-container {
+            padding: 2rem;
+            border-radius: 30px;
+            background-color: #fff;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">Lista de Clientes</h2>
+            <a th:href="@{/clientes/nuevo}" class="btn btn-primary px-4 py-2 shadow-sm">
+                Nuevo Cliente
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table align-middle text-center">
+                <thead>
+                <tr>
+                    <th>DNI</th>
+                    <th>Nombre Completo</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cliente : ${clientes}">
+                    <td th:text="${cliente.dni}"></td>
+                    <td th:text="${cliente.nombres + ' ' + cliente.apellidos}"></td>
+                    <td th:text="${cliente.telefono}"></td>
+                    <td th:text="${cliente.correo}"></td>
+                    <td>
+                        <a th:href="@{'/clientes/editar/' + ${cliente.idCliente}}" class="btn btn-warning btn-sm me-1 px-3">
+                        </a>
+                        <a th:href="@{'/clientes/eliminar/' + ${cliente.idCliente}}" class="btn btn-danger btn-sm px-3"
+                           onclick="return confirm('¿Seguro que deseas eliminar este cliente?')">
+                        </a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(clientes)}">
+                    <td colspan="5" class="text-muted py-4">No hay clientes registrados.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-end mt-3">
+            <a th:href="@{/dashboard}" class="btn btn-secondary px-4 py-2">Volver</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
